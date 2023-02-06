@@ -7,29 +7,18 @@ global rebootstr
 dump := 0
 rebootstr := "shutdown /r /t 0"
 
-SetCapsLockState, off
 ;-----------------------FEN Site 실행-------------------------
 CoordMode, mouse, Relative
-IfWinNotExist, Fen Service Administration Page - Windows Internet Explorer
-{
-	IfWinNotExist, Windows 보안
-	{
-		IfWinNotExist, 인증서 오류: 탐색이 차단됨 - Windows Internet Explorer
-		{
-			run, https://%A_IPAddress1%:4433
-		}
-	}
-}
+IfWinNotExist, Fen Service Administration Page - Windows Internet Explorer && IfWinNotExist, Windows 보안 && IfWinNotActive, 인증서 오류: 탐색이 차단됨 - Windows Internet Explorer
+	run, https://%A_IPAddress1%:4433
 sleep, 1000
-
 ifWinExist, 인증서 오류: 탐색이 차단됨 - Windows Internet Explorer
-	WinActivate, 인증서 오류: 탐색이 차단됨 - Windows Internet Explorer
-	ControlClick, x187 y278, 인증서 오류: 탐색이 차단됨 - Windows Internet Explorer, , , ,NA
-sleep, 1000
-
-ifWinExist, Windows 보안
-	WinActivate, Windows 보안
-	ControlSend, ,{Enter}, Windows 보안
+{
+	Click, 187 278
+	sleep, 1000
+	ifWinExist, Windows 보안
+			send, {Enter}
+}
 
 ;------------------------------- email 설정-----------------------------------
 sender = nambhbh@naver.com
